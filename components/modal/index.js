@@ -1,15 +1,18 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Pressable } from "react-native";
 import * as Clipboard from 'expo-clipboard';
+import useStorage from '../../hooks/useStorage';
 
 export function ModalPassword({password, handleClose, getAnotherPassword}) {
-    let pass = '';
+    const { saveItem } = useStorage();
 
     async function handleCopyPassword () {
         await Clipboard.setStringAsync(password);
-        pass = await Clipboard.getStringAsync()
-        alert('Senha copiada com sucesso!');
+        pass = await Clipboard.getStringAsync();
 
+        await saveItem('@pass', password);
+        
+        alert('Senha copiada com sucesso!');
         handleClose();
     }
 
